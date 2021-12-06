@@ -1,14 +1,20 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import type { RootState } from "../../app/store";
 import { newPresupuesto } from "../presupuesto/presupuestoSlice";
+interface ValidacionState {
+  validar: boolean;
+}
+
+const initialState: ValidacionState = {
+  validar: false,
+};
 
 export const validacionSlice = createSlice({
   name: "validacion",
-  initialState: false,
+  initialState,
   reducers: {},
   extraReducers: (builder) => {
     builder.addCase(newPresupuesto, (state, action) => {
-      return (state = true);
+      state.validar = true;
     });
   },
 });

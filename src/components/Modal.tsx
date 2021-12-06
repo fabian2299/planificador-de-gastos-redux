@@ -1,13 +1,13 @@
 import { ChangeEvent, useState } from "react";
-import CerrarModal from "../img/cerrar.svg";
+import { useAppDispatch, useAppSelector } from "../app/hooks";
+import { newGasto } from "../features/gasto/gastosSlice";
+import { animateModal, toggleModal } from "../features/modal/modalSlice";
 import Mensaje from "./Mensaje";
+import CerrarModal from "../img/cerrar.svg";
 
-export default function Modal({
-  setModal,
-  animarModal,
-  setAnimarModal,
-  guardarGasto,
-}: any) {
+export default function Modal() {
+  const dispatch = useAppDispatch();
+  const animarModal = useAppSelector((state) => state.modal.animarModal);
   const [mensaje, setMensaje] = useState("");
   const [values, setValues] = useState({
     nombre: "",
@@ -25,16 +25,14 @@ export default function Modal({
   };
 
   const ocultarModal = () => {
-    setAnimarModal(false);
-
+    dispatch(animateModal(false));
     setTimeout(() => {
-      setModal(false);
+      dispatch(toggleModal(false));
     }, 500);
   };
 
   const handleSumbit = (e: ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
-
     if (Object.values(values).includes("")) {
       setMensaje("todos los campos son obligatorios");
       setTimeout(() => {
@@ -42,7 +40,12 @@ export default function Modal({
       }, 2000);
       return;
     }
-    guardarGasto(values);
+    const { nombre, cantidad, categoria } = values;
+    dispatch(newGasto(nombre, cantidad, categoria));
+    dispatch(animateModal(true));
+    setTimeout(() => {
+      dispatch(toggleModal(false));
+    }, 500);
   };
 
   return (

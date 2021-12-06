@@ -1,15 +1,9 @@
 import { useAppSelector } from "../app/hooks";
 import { selectPresupuesto } from "../features/presupuesto/presupuestoSlice";
+import { formatearCantidad } from "../helpers";
 
 export default function ControlPresupuesto() {
   const presupuesto = useAppSelector(selectPresupuesto);
-
-  const formatearCantidad = (cantidad: number) => {
-    return cantidad.toLocaleString("en-US", {
-      style: "currency",
-      currency: "USD",
-    });
-  };
 
   return (
     <div className="control-presupuesto contenedor sombra dos-columnas">

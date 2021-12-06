@@ -1,24 +1,24 @@
 import { ChangeEvent, useState } from "react";
-import { useAppDispatch, useAppSelector } from "../app/hooks";
+import { useAppDispatch } from "../app/hooks";
 import { newPresupuesto } from "../features/presupuesto/presupuestoSlice";
 import Mensaje from "./Mensaje";
 
 export default function NuevoPresupuesto() {
   const dispatch = useAppDispatch();
-  const [valor, setValor] = useState<number>(0);
+  const [valor, setValor] = useState("");
   const [mensaje, setMensaje] = useState("");
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setValor(e.target.value as any);
+    setValor(e.target.value);
   };
 
   const handleSubmit = (e: ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!+valor || valor <= 0) {
+    if (!+valor || +valor <= 0) {
       return setMensaje("No es un presupuesto valido");
     }
     setMensaje("");
-    dispatch(newPresupuesto(valor));
+    dispatch(newPresupuesto(+valor));
   };
 
   return (

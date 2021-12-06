@@ -6,8 +6,13 @@ import IconoGastos from "../img/icono_gastos.svg";
 import IconoOcio from "../img/icono_ocio.svg";
 import IconoSalud from "../img/icono_salud.svg";
 import IconoSuscripciones from "../img/icono_suscripciones.svg";
+import { IGasto } from "../features/gasto/gastosSlice";
 
-const listaIconos = {
+interface ListaIconos {
+  [key: string]: string;
+}
+
+const listaIconos: ListaIconos = {
   ahorro: IconoAhorro,
   comida: IconoComida,
   casa: IconoCasa,
@@ -17,7 +22,11 @@ const listaIconos = {
   suscripciones: IconoSuscripciones,
 };
 
-export default function Gasto({ gasto }: any) {
+interface GastoProps {
+  gasto: IGasto;
+}
+
+export default function Gasto({ gasto }: GastoProps) {
   const { categoria, nombre, cantidad, id, fecha } = gasto;
   return (
     <div className="gasto sombra">
@@ -27,7 +36,7 @@ export default function Gasto({ gasto }: any) {
           <p className="categoria">{categoria}</p>
           <p className="nombre-gasto">{nombre}</p>
           <p className="fecha-gasto">
-            Agregado el : <span>{formatearFecha(fecha)}</span>
+            Agregado el : <span>{formatearFecha(fecha ?? Date.now())}</span>
           </p>
         </div>
       </div>
