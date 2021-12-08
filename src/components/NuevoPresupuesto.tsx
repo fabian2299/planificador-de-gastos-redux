@@ -1,11 +1,12 @@
 import { ChangeEvent, useState } from "react";
-import { useAppDispatch } from "../app/hooks";
+import { useAppDispatch, useAppSelector } from "../app/hooks";
 import { newPresupuesto } from "../features/presupuesto/presupuestoSlice";
 import Mensaje from "./Mensaje";
 
 export default function NuevoPresupuesto() {
   const dispatch = useAppDispatch();
-  const [valor, setValor] = useState("");
+  const presupuesto = useAppSelector((state) => state.presupuesto.presupuesto);
+  const [valor, setValor] = useState(presupuesto ?? 0);
   const [mensaje, setMensaje] = useState("");
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {

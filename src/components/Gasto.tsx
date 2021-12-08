@@ -19,7 +19,7 @@ import {
   IGasto,
   removeGasto,
   updateGasto,
-} from "../features/gasto/gastosSlice";
+} from "../features/gastos/gastosSlice";
 import { useAppDispatch } from "../app/hooks";
 import { animateModal, toggleModal } from "../features/modal/modalSlice";
 

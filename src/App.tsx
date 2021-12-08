@@ -4,6 +4,7 @@ import Header from "./components/Header";
 import ListadoGastos from "./components/ListadoGastos";
 import Modal from "./components/Modal";
 import iconoNuevoGasto from "./img/nuevo-gasto.svg";
+import Filtros from "./components/Filtros";
 
 export default function App() {
   const dispatch = useAppDispatch();
@@ -20,10 +21,10 @@ export default function App() {
   return (
     <div className={modal ? "fijar" : ""}>
       <Header />
-
       {validacion && (
         <>
           <main>
+            <Filtros />
             <ListadoGastos />
           </main>
           <div className="nuevo-gasto">

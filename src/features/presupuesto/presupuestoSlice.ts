@@ -1,7 +1,8 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import type { RootState } from "../../app/store";
+import { resetGastos } from "../gastos/gastosSlice";
 interface PresupuestoState {
-  presupuesto: number;
+  presupuesto: number | string;
 }
 
 const initialState: PresupuestoState = {
@@ -19,6 +20,11 @@ export const presupuestoSlice = createSlice({
       }
       state.presupuesto = +action.payload;
     },
+  },
+  extraReducers: (builder) => {
+    builder.addCase(resetGastos, (state, action) => {
+      state.presupuesto = 0;
+    });
   },
 });
 

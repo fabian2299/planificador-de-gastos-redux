@@ -1,6 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { generarId } from "../../helpers";
-import { toggleModal } from "../modal/modalSlice";
 
 export interface IGasto {
   nombre: string;
@@ -13,11 +12,13 @@ export interface IGasto {
 interface GastoState {
   gastos: IGasto[];
   gastoEditar: IGasto;
+  gastosFiltrados: IGasto[];
 }
 
 const initialState: GastoState = {
   gastos: [],
   gastoEditar: {} as IGasto,
+  gastosFiltrados: [],
 };
 
 export const gastosSlice = createSlice({
@@ -60,10 +61,26 @@ export const gastosSlice = createSlice({
         state.gastoEditar = {} as IGasto;
       }
     },
+    filterGastos: (state, action) => {
+      const { filtro } = action.payload;
+      const filterGastos = state.gastos.filter(
+        (gasto) => gasto.categoria === filtro
+      );
+      state.gastosFiltrados = filterGastos;
+    },
+    resetGastos: (state, action) => {
+      state.gastos = action.payload;
+    },
   },
 });
 
-export const { newGasto, updateGasto, editGasto, removeGasto } =
-  gastosSlice.actions;
+export const {
+  newGasto,
+  updateGasto,
+  editGasto,
+  removeGasto,
+  filterGastos,
+  resetGastos,
+} = gastosSlice.actions;
 
 export default gastosSlice.reducer;

@@ -4,7 +4,7 @@ import {
   editGasto,
   newGasto,
   updateGasto,
-} from "../features/gasto/gastosSlice";
+} from "../features/gastos/gastosSlice";
 import { animateModal, toggleModal } from "../features/modal/modalSlice";
 import Mensaje from "./Mensaje";
 import CerrarModal from "../img/cerrar.svg";
