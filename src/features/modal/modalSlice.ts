@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface ModalState {
   modal: boolean;
@@ -14,10 +14,10 @@ export const modalSlice = createSlice({
   name: "modal",
   initialState,
   reducers: {
-    toggleModal: (state, action) => {
+    toggleModal: (state, action: PayloadAction<boolean>) => {
       state.modal = action.payload;
     },
-    animateModal: (state, action) => {
+    animateModal: (state, action: PayloadAction<boolean>) => {
       state.animarModal = action.payload;
     },
   },

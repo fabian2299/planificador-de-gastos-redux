@@ -1,19 +1,25 @@
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
-import { newGasto } from "../features/gasto/gastosSlice";
+import {
+  editGasto,
+  newGasto,
+  updateGasto,
+} from "../features/gasto/gastosSlice";
 import { animateModal, toggleModal } from "../features/modal/modalSlice";
 import Mensaje from "./Mensaje";
 import CerrarModal from "../img/cerrar.svg";
 
 export default function Modal() {
   const dispatch = useAppDispatch();
+  const editarGasto = useAppSelector((state) => state.gastos.gastoEditar);
   const animarModal = useAppSelector((state) => state.modal.animarModal);
   const [mensaje, setMensaje] = useState("");
   const [values, setValues] = useState({
     nombre: "",
-    cantidad: "",
+    cantidad: 0,
     categoria: "",
   });
+  const [id, setId] = useState("");
 
   const handleChange = (
     e: ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -26,6 +32,7 @@ export default function Modal() {
 
   const ocultarModal = () => {
     dispatch(animateModal(false));
+    dispatch(editGasto({}));
     setTimeout(() => {
       dispatch(toggleModal(false));
     }, 500);
@@ -40,13 +47,36 @@ export default function Modal() {
       }, 2000);
       return;
     }
-    const { nombre, cantidad, categoria } = values;
-    dispatch(newGasto(nombre, cantidad, categoria));
+    if (id) {
+      const { nombre, cantidad, categoria } = values;
+      dispatch(updateGasto({ nombre, cantidad, id, categoria }));
+      dispatch(editGasto({}));
+    } else {
+      const { nombre, cantidad, categoria } = values;
+      dispatch(newGasto(nombre, +cantidad, categoria));
+    }
     dispatch(animateModal(true));
     setTimeout(() => {
       dispatch(toggleModal(false));
     }, 500);
+    setValues({
+      nombre: "",
+      cantidad: 0,
+      categoria: "",
+    });
   };
+
+  useEffect(() => {
+    if (editarGasto.id) {
+      setValues({
+        ...values,
+        nombre: editarGasto.nombre,
+        cantidad: editarGasto.cantidad,
+        categoria: editarGasto.categoria,
+      });
+      setId(editarGasto.id);
+    }
+  }, []);
 
   return (
     <div className="modal">
@@ -58,7 +88,7 @@ export default function Modal() {
         onSubmit={handleSumbit}
         className={`formulario ${animarModal ? "animar" : "cerrar"}`}
       >
-        <legend>Nuevo Gasto</legend>
+        <legend>{editarGasto.nombre ? "Editar Gasto " : "Nuevo Gasto"}</legend>
         {mensaje && <Mensaje tipo="error">{mensaje}</Mensaje>}
         <div className="campo">
           <label htmlFor="nombre">Nombre Gasto</label>
@@ -103,7 +133,10 @@ export default function Modal() {
           </select>
         </div>
 
-        <input type="submit" value="Añadir Gasto" />
+        <input
+          type="submit"
+          value={editarGasto.nombre ? "Guardar Cambios" : "Añadir Gasto"}
+        />
       </form>
     </div>
   );
